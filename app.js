@@ -7,9 +7,12 @@ const bodyparser = require('koa-bodyparser')
 // const koalogger = require('koa-logger')
 // 日志
 const logUtil = require('./utils/log_util')
+
+// middlewares
+const response_formatter = require('./middlewares/response_formatter')
+
 // router api 接口
 const api = require('./routes/api')
-
 const index = require('./routes/index')
 const users = require('./routes/users')
 
@@ -51,6 +54,9 @@ app.use(async (ctx, next) => {
     logUtil.logError(ctx, error, ms);
   }
 })
+
+// 统一返回格式
+app.use(response_formatter("^/api"))
 
 // routes
 app.use(index.routes(), index.allowedMethods())
